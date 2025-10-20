@@ -79,12 +79,12 @@ public class CustomerController {
     }
 
     // Internal endpoint for CRP to update customer's risk profile FK
-//    @PostMapping("/v1/user/risk-profile")
-//    public ResponseEntity<ResponseWrapper<Void>> updateRiskProfile(@RequestBody @Valid UpdateRiskProfileRequest req, Locale locale) {
-//        log.info("[customer] update-risk-profile customerId={} riskProfileId={}", req.getCustomerId(), req.getRiskProfileId());
-//        authService.updateRiskProfile(req.getCustomerId(), req.getRiskProfileId());
-//        return ResponseEntity.ok(ApiResponseUtil.success(null, null, null));
-//    }
+    @PostMapping("/v1/user/risk-profile")
+    public ResponseEntity<ResponseWrapper<Void>> updateRiskProfile(@RequestBody @Valid UpdateRiskProfileRequest req, Locale locale) {
+        log.info("[customer] update-risk-profile customerId={} riskProfileId={}", req.getCustomerId(), req.getRiskProfileId());
+        authService.updateRiskProfile(req.getCustomerId(), req.getRiskProfileId());
+        return ResponseEntity.ok(ApiResponseUtil.success(null, null, null));
+    }
 
     @Data
     public static class UpdateRiskProfileRequest {

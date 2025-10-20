@@ -1,6 +1,6 @@
 package com.wms.customer.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,11 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChangePasswordRequest {
-    @JsonProperty("oldPassword")
+    @JsonAlias({"oldPassword", "currentPassword"})
     @NotBlank private String currentPassword;
-    @JsonProperty("newPassword")
+    @JsonAlias({"newPassword"})
     @NotBlank private String newPassword;
-    @JsonProperty("newPw")
+    @JsonAlias({"newPw", "confirmNewPassword"})
     @NotBlank private String confirmNewPassword;
 }
-
