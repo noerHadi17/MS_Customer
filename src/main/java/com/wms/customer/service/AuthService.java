@@ -10,6 +10,7 @@ import com.wms.customer.exception.BusinessException;
 import com.wms.customer.repository.MstCustomerRepository;
 import com.wms.customer.config.CustomerDefaultsProperties;
 import com.wms.customer.kafka.AuditEventProducer;
+import com.wms.customer.repository.MstRiskProfileRefRepository;
 import com.wms.customer.security.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,6 +27,7 @@ public class AuthService {
     private final AuditEventProducer auditEventProducer;
     private final CustomerDefaultsProperties defaults;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    private final MstRiskProfileRefRepository riskProfileRepository;
 
     public boolean checkEmail(String email) { return customerRepository.existsByEmail(email); }
 
@@ -65,12 +67,23 @@ public class AuthService {
         String token = jwtTokenService.createToken(c.getCustomerId(), c.getName(), c.getEmail());
         auditEventProducer.sendAuditEvent("LOGIN_SUCCESS", String.valueOf(c.getCustomerId()), c.getEmail(), "SUCCESS", "Login");
         boolean kycComplete = c.getNik() != null && !"-".equals(c.getNik()) && c.getPob() != null && !c.getPob().isBlank();
+        boolean crpComplete = c.getIdRiskProfile() != null;
+        String riskProfileType = null;
+        if (crpComplete) {
+            try {
+                riskProfileType = riskProfileRepository.findById(c.getIdRiskProfile())
+                        .map(r -> r.getProfileType())
+                        .orElse(null);
+            } catch (Exception ignored) {}
+        }
         return LoginResponse.builder()
                 .customerId(c.getCustomerId())
                 .name(c.getName())
                 .email(c.getEmail())
                 .token(token)
                 .kycComplete(kycComplete)
+                .crpComplete(crpComplete)
+                .riskProfileType(riskProfileType)
                 .build();
     }
 

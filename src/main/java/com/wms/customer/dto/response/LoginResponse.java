@@ -17,4 +17,6 @@ public class LoginResponse {
     private String email;
     private String token;
     private boolean kycComplete;
+    private boolean crpComplete;
+    private String riskProfileType;
 }
