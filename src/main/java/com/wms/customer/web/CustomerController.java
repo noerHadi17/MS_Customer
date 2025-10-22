@@ -3,8 +3,8 @@ package com.wms.customer.web;
 import com.wms.customer.dto.request.*;
 import com.wms.customer.dto.response.*;
 import lombok.Data;
-import com.wms.customer.service.AuthService;
-import com.wms.customer.service.KycService;
+import com.wms.customer.service.interfacing.AuthService;
+import com.wms.customer.service.interfacing.KycService;
 import com.wms.customer.i18n.I18nMessageCollection;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -62,7 +62,7 @@ public class CustomerController {
         return ResponseEntity.ok(ApiResponseUtil.success(null, I18nMessageCollection.CHANGE_PASSWORD_SUCCESS.name(), msg));
     }
 
-    @GetMapping("/v1/kyc/status")
+    @GetMapping("/v1/kyc-status")
     public ResponseEntity<ResponseWrapper<KycResponse>> kycStatus(@RequestHeader("X-User-Id") UUID userId, Locale locale) {
         log.info("[customer] kyc-status userId={}", userId);
         KycResponse res = kycService.getStatus(userId);

@@ -1,6 +1,7 @@
 package com.wms.customer.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -13,10 +14,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class KycRequest {
-    @JsonAlias({"nik"})
+    @JsonProperty("nik")
     @NotBlank private String nik;
-    @JsonAlias({"pob"})
+    @JsonProperty("pob")
     @NotBlank private String pob;
-    @JsonAlias({"dob"})
+    @JsonProperty("dob")
     @NotNull private LocalDate dob;
 }

@@ -1,4 +1,4 @@
-package com.wms.customer.service;
+package com.wms.customer.service.implementation;
 
 import com.wms.customer.dto.request.ChangePasswordRequest;
 import com.wms.customer.dto.request.LoginRequest;
@@ -12,6 +12,7 @@ import com.wms.customer.config.CustomerDefaultsProperties;
 import com.wms.customer.kafka.AuditEventProducer;
 import com.wms.customer.repository.MstRiskProfileRefRepository;
 import com.wms.customer.security.JwtTokenService;
+import com.wms.customer.service.interfacing.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class AuthServiceImpl implements AuthService {
     private final MstCustomerRepository customerRepository;
     private final JwtTokenService jwtTokenService;
     private final AuditEventProducer auditEventProducer;

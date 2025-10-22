@@ -1,11 +1,12 @@
-package com.wms.customer.service;
+package com.wms.customer.service.implementation;
 
 import com.wms.customer.dto.request.KycRequest;
 import com.wms.customer.dto.response.KycResponse;
 import com.wms.customer.entity.MstCustomer;
 import com.wms.customer.exception.BusinessException;
-import com.wms.customer.repository.MstCustomerRepository;
 import com.wms.customer.kafka.AuditEventProducer;
+import com.wms.customer.repository.MstCustomerRepository;
+import com.wms.customer.service.interfacing.KycService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +14,11 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class KycService {
+public class KycServiceImpl implements KycService {
     private final MstCustomerRepository repository;
     private final AuditEventProducer auditEventProducer;
 
+    @Override
     public KycResponse getStatus(UUID customerId) {
         MstCustomer c = repository.findById(customerId).orElseThrow(() -> new BusinessException("AUTH_INVALID_CREDENTIALS"));
         boolean complete = c.getNik() != null && !"-".equals(c.getNik())
@@ -31,6 +33,7 @@ public class KycService {
                 .build();
     }
 
+    @Override
     public KycResponse submit(UUID customerId, KycRequest req) {
         if (req.getNik() == null || req.getNik().length() != 16 || !req.getNik().chars().allMatch(Character::isDigit)) {
             throw new BusinessException("KYC_VALIDATION_FAILED");
