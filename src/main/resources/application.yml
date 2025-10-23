@@ -1,0 +1,61 @@
+server:
+  port: ${SERVER_PORT}
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: ${JPA_DDL:none}
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP}
+    consumer:
+      group-id: wms-customer-group
+      auto-offset-reset: latest
+    producer:
+      acks: all
+      retries: 3
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    template:
+      default-topic: audit.events
+  messages:
+    basename: messages
+    encoding: UTF-8
+kafka:
+  enabled: true
+
+customer:
+  defaults:
+    nikPlaceholder: "-"
+    pobPlaceholder: "-"
+    defaultDobNow: true
+logging:
+  level:
+    root: ${LOG_LEVEL_ROOT}
+    org.apache.kafka: ERROR
+    org.apache.kafka.clients: ERROR
+    org.springframework.kafka: ERROR
+    reactor.netty: ERROR
+    org.springframework.web: INFO
+    com.wms.customer: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+springdoc:
+  api-docs.enabled: true
+  swagger-ui.enabled: true
+
+security:
+  jwt:
+    secret: ${JWT_SECRET:dev-secret-change-me}
+    issuer: ${JWT_ISSUER:wms-gateway}
+    expMinutes: ${JWT_EXP_MIN:120}
