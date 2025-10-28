@@ -8,6 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Request DTO describing the information required to create a new customer account.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 @NoArgsConstructor

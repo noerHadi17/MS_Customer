@@ -5,6 +5,9 @@ import lombok.Getter;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 
+/**
+ * Enumerates message codes and default HTTP statuses used throughout the customer service.
+ */
 @Getter
 @AllArgsConstructor
 public enum I18nMessageCollection {

@@ -10,6 +10,9 @@ import lombok.Data;
 
 import java.util.UUID;
 
+/**
+ * Lightweight reference entity for the risk profile master data.
+ */
 @Entity
 @Table(name = EntityNames.MST_RISKPROFILES)
 @Data

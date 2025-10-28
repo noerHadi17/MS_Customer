@@ -20,6 +20,9 @@ import java.util.stream.Collectors;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 
+/**
+ * Consolidates exception handling for the customer service, translating errors into consistent API responses.
+ */
 @org.springframework.web.bind.annotation.RestControllerAdvice
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {

@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Request payload used when a customer attempts to sign in with email credentials.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,4 +19,3 @@ public class LoginRequest {
     @JsonProperty("password")
     @NotBlank private String password;
 }
-

@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
+/**
+ * Authentication response returned to the client after a successful login attempt.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

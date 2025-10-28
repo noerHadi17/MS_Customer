@@ -16,6 +16,9 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Kafka producer configuration tailored for the customer service, providing a JSON-capable template when Kafka is enabled.
+ */
 @Configuration
 @ConditionalOnProperty(prefix = "kafka", name = "enabled", havingValue = "true")
 @Slf4j

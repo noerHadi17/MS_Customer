@@ -13,6 +13,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.UUID;
 
+/**
+ * JPA entity mapping to `mst_customer`, representing core customer profile information.
+ */
 @Entity
 @Table(name = EntityNames.MST_CUSTOMER)
 @Data

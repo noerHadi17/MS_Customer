@@ -9,6 +9,9 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
+/**
+ * Configures message resolution and locale handling for internationalized responses.
+ */
 @Configuration
 public class MessageSourceConfig {
 
@@ -28,4 +31,3 @@ public class MessageSourceConfig {
         return resolver;
     }
 }
-

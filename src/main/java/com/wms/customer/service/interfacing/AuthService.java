@@ -8,6 +8,9 @@ import com.wms.customer.dto.response.RegisterResponse;
 
 import java.util.UUID;
 
+/**
+ * Defines authentication-related operations exposed by the customer service.
+ */
 public interface AuthService {
     boolean checkEmail(String email);
     RegisterResponse register(RegisterRequest req);
@@ -15,4 +18,3 @@ public interface AuthService {
     void changePassword(UUID customerId, ChangePasswordRequest req);
     void updateRiskProfile(UUID customerId, UUID riskProfileId);
 }
-

@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Response payload returned after completing or fetching a customer's KYC information.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,4 +18,3 @@ public class KycResponse {
     private String pob;
     private String dob;
 }
-

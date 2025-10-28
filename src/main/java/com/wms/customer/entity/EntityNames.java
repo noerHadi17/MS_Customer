@@ -1,5 +1,8 @@
 package com.wms.customer.entity;
 
+/**
+ * Centralizes table and column names referenced by JPA entities to avoid hardcoded literals.
+ */
 public final class EntityNames {
     private EntityNames() {}
 

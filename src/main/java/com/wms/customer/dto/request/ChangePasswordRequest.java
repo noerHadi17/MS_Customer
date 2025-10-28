@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Request payload for updating a customer's password, ensuring the client submits the current and new credentials.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Response model indicating whether a given email is already associated with a customer.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,4 +15,3 @@ import lombok.NoArgsConstructor;
 public class CheckEmailResponse {
     private boolean exists;
 }
-

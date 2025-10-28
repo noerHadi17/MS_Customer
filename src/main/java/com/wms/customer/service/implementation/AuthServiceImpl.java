@@ -11,7 +11,8 @@ import com.wms.customer.repository.MstCustomerRepository;
 import com.wms.customer.config.CustomerDefaultsProperties;
 import com.wms.customer.kafka.AuditEventProducer;
 import com.wms.customer.repository.MstRiskProfileRefRepository;
-import com.wms.customer.security.JwtTokenService;
+import com.wms.customer.security.UserAuthJWT;
+import com.wms.customer.security.UserAuthJWTUtility;
 import com.wms.customer.service.interfacing.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,11 +21,15 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Concrete authentication service handling registration, login, and credential updates for customers.
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
     private final MstCustomerRepository customerRepository;
-    private final JwtTokenService jwtTokenService;
+    private final UserAuthJWTUtility userAuthJWTUtility;
+    private final UserAuthJWT userAuthJWT;
     private final AuditEventProducer auditEventProducer;
     private final CustomerDefaultsProperties defaults;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -49,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
             c.setPob(defaults.getPobPlaceholder());
             customerRepository.save(c);
             auditEventProducer.sendAuditEvent("REGISTER_SUCCESS", String.valueOf(c.getCustomerId()), c.getEmail(), "SUCCESS", "Registered");
-            return RegisterResponse.builder().customerId(c.getCustomerId()).name(c.getName()).email(c.getEmail()).build();
+            return RegisterResponse.builder().customerId(c.getCustomerId()).name(c.getName()).email(c.getEmail()).address(c.getAddress()).build();
         } catch (RuntimeException ex) {
             auditEventProducer.sendAuditEvent("REGISTER_FAILURE", null, req.getEmail(), "FAILURE", ex.getMessage());
             org.slf4j.LoggerFactory.getLogger(getClass()).error("Register failed for email={}", req.getEmail(), ex);
@@ -63,20 +68,52 @@ public class AuthServiceImpl implements AuthService {
             auditEventProducer.sendAuditEvent("LOGIN_FAILURE", null, req.getEmail(), "FAILURE", "Invalid credentials");
             throw new BusinessException("AUTH_INVALID_CREDENTIALS");
         }
+
         MstCustomer c = opt.get();
-        // Generate JWT token for client use
-        String token = jwtTokenService.createToken(c.getCustomerId(), c.getName(), c.getEmail());
-        auditEventProducer.sendAuditEvent("LOGIN_SUCCESS", String.valueOf(c.getCustomerId()), c.getEmail(), "SUCCESS", "Login");
-        boolean kycComplete = c.getNik() != null && !"-".equals(c.getNik()) && c.getPob() != null && !c.getPob().isBlank();
+
+        // TTL token (ambil dari properti jika ada, fallback 360 menit)
+        int ttlMinutes = (defaults != null && defaults.getJwtTtlMinutes() != null)
+                ? defaults.getJwtTtlMinutes()
+                : 360;
+
+        // Status KYC lengkap atau belum
+        boolean kycComplete = c.getNik() != null && !"-".equals(c.getNik())
+                && c.getPob() != null && !c.getPob().isBlank();
+
+        // Status CRP (Customer Risk Profile) lengkap atau belum
         boolean crpComplete = c.getIdRiskProfile() != null;
+
+        // Ambil tipe risk profile (kalau ada)
         String riskProfileType = null;
         if (crpComplete) {
             try {
                 riskProfileType = riskProfileRepository.findById(c.getIdRiskProfile())
                         .map(r -> r.getProfileType())
                         .orElse(null);
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+                // Hindari error jika tidak ada record
+            }
         }
+
+        // Generate JWT terenkripsi (pakai UserAuthJWT)
+        String token = userAuthJWT.generateAuthToken(
+                c.getCustomerId(),
+                c.getName(),
+                c.getEmail(),
+                ttlMinutes,
+                "wms-customer-service"
+        );
+
+        // Audit sukses login
+        auditEventProducer.sendAuditEvent(
+                "LOGIN_SUCCESS",
+                String.valueOf(c.getCustomerId()),
+                c.getEmail(),
+                "SUCCESS",
+                "Login"
+        );
+
+        // Build response
         return LoginResponse.builder()
                 .customerId(c.getCustomerId())
                 .name(c.getName())

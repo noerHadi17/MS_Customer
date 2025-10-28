@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
+/**
+ * Event payload published when a customer's risk profile changes.
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -21,4 +24,3 @@ public class RiskProfileUpdatedEvent {
     private int totalScore;
     private UUID questionnaireId;
 }
-

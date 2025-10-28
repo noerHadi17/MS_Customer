@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+/**
+ * Request model capturing the data required to complete KYC for a customer.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

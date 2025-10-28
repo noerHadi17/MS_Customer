@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Publishes audit events to Kafka when auditing is enabled for the service.
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor

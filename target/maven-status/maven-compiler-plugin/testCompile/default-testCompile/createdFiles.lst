@@ -1,0 +1,5 @@
+com\wms\customer\service\kyc\KycServiceImplTest.class
+com\wms\customer\security\UserAuthJWTUtilityTest.class
+com\wms\customer\security\UserAuthJWTIntegrationTest.class
+com\wms\customer\service\auth\AuthServiceImplTest.class
+com\wms\customer\security\UserAuthJWTTest.class

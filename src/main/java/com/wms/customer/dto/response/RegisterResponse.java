@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
+/**
+ * Response returned after a new customer record is created.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,4 +21,3 @@ public class RegisterResponse {
     private String password;
     private String address;
 }
-

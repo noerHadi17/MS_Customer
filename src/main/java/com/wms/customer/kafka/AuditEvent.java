@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+/**
+ * Payload sent to the audit topic whenever customer actions need to be recorded.
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -22,4 +25,3 @@ public class AuditEvent {
     private String email;
     private String description;
 }
-

@@ -2,6 +2,9 @@ package com.wms.customer.exception;
 
 import lombok.Getter;
 
+/**
+ * Base runtime exception for domain validation errors, carrying an i18n message code.
+ */
 @Getter
 public class BusinessException extends RuntimeException {
     private final String messageCode;
@@ -16,4 +19,3 @@ public class BusinessException extends RuntimeException {
         this.messageCode = messageCode;
     }
 }
-

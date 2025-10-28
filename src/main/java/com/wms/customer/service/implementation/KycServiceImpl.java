@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+/**
+ * Implements KYC retrieval and submission logic for the customer service.
+ */
 @Service
 @RequiredArgsConstructor
 public class KycServiceImpl implements KycService {
